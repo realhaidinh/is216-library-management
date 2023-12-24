@@ -21,6 +21,7 @@ public class DatabaseConnection {
 		try {
 			if(conn != null) {
 				conn.close();
+				conn = null;
 			}
 		}
 		catch (SQLException e) {

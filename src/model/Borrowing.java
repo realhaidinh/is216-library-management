@@ -1,6 +1,7 @@
 package model;
 
 public class Borrowing {
+	private String Id;
 	private String ISBN;
 	private String ReaderId;
 	private String BorrowDate;
@@ -8,7 +9,8 @@ public class Borrowing {
 	public Borrowing() {
 
 	}
-	public Borrowing(String ISBN, String ReaderId, String BorrowDate, String ReturnDate) {
+	public Borrowing(String Id, String ISBN, String ReaderId, String BorrowDate, String ReturnDate) {
+		this.Id = Id;
 		this.ISBN = ISBN;
 		this.ReaderId = ReaderId;
 		this.BorrowDate = BorrowDate;
@@ -45,5 +47,13 @@ public class Borrowing {
 
 	public void setReturnDate(String returnDate) {
 		ReturnDate = returnDate;
+	}
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
 	}
 }

@@ -62,7 +62,7 @@ public class ReaderPanel extends JFrame {
 			if (row == -1) {
 				JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn độc giả cần xóa");
 			} else {
-				if (ReaderDAO.getDAO().deleteById(model.getValueAt(readerTable.getSelectedRow(), 0).toString()) == true) {
+				if (ReaderDAO.getDAO().deleteById(model.getValueAt(row, 0).toString()) == true) {
 					removeFromTable(row);
 					JOptionPane.showMessageDialog(rootPane, "Xóa độc giả thành công");
 				} else {
@@ -93,8 +93,8 @@ public class ReaderPanel extends JFrame {
 				reader.getReaderId(), reader.getName(), reader.getBirthDate(), reader.getPhone()
 		});
 	}
-	public void removeFromTable(int index) {
-		model.removeRow(index);
+	public void removeFromTable(int row) {
+		model.removeRow(row);
 	}
 	public JTable getReaderTable() {
 		return readerTable;
