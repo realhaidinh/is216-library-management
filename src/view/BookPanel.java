@@ -6,12 +6,13 @@ import model.Book;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import util.BookToExcel;
 
 public class BookPanel extends JFrame {
 	private JPanel bookPanel;
@@ -72,7 +73,8 @@ public class BookPanel extends JFrame {
 				JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn sách cần xóa");
 			} else {
 				if (BookDAO.getDAO().deleteByISBN(model.getValueAt(row, 0).toString()) == true) {
-					removeFromTable(row);
+					showTable();
+					clearTextField();
 					JOptionPane.showMessageDialog(rootPane, "Xóa sách thành công");
 				} else {
 					JOptionPane.showMessageDialog(rootPane, "Xóa sách thất bại");
@@ -88,49 +90,51 @@ public class BookPanel extends JFrame {
 				editForm.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 				editForm.pack();
 				editForm.setVisible(true);
+				clearTextField();
+			}
+		});
+		exportBtn.addActionListener(e -> {
+			SaveExcelFile saveFile = new SaveExcelFile();
+			int input = saveFile.showDialog(thisPanel, "Lưu");
+			if (input == JFileChooser.APPROVE_OPTION) {
+				File file = saveFile.getSelectedFile();
+				BookToExcel excel = new BookToExcel();
+				excel.setFilePath(file.getAbsolutePath().concat(".xlsx"));
+				if (excel.export(books, headers)) {
+					JOptionPane.showMessageDialog(rootPane, "Xuất danh sách thành công");
+				} else {
+					JOptionPane.showMessageDialog(rootPane, "Xuất danh sách thất bại");
+				}
 			}
 		});
 	}
-
 	public JTable getBookTable() {
 		return bookTable;
 	}
-
 	public void showTable() {
+		try {
+			books = BookDAO.getDAO().findAllBook();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		model.setNumRows(0);
 		for (Book book : books) {
 			addToTable(book);
 		}
 	}
-
+	public void clearTextField() {
+		isbnField.setText("");
+		titleField.setText("");
+		authorField.setText("");
+		categoryField.setText("");
+		publisherField.setText("");
+		pubdateField.setText("");
+		statusField.setText("");
+	}
 	public void addToTable(Book book) {
 		model.addRow(new Object[]{
 				book.getISBN(), book.getTitle(), book.getAuthor(), book.getCategory(), book.getPublisher(), book.getPublishDate(), book.getStatus() ? "Sẵn có" : "Đang cho mượn"
 		});
-	}
-
-	public Boolean changeBookStatus(String isbn) {
-		for (int i = 0; i < model.getRowCount(); ++i) {
-			if (model.getValueAt(i, 0).toString().equals(isbn)) {
-				String status =  model.getValueAt(i, 6).toString().equals("Sẵn có") ? "Đang cho mượn" : "Sẵn có";
-				model.setValueAt(status, i, 6);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void removeFromTable(int row) {
-		model.removeRow(row);
-	}
-
-	public void editBookAtRow(Book book, int row) {
-		model.setValueAt(book.getISBN(), row, 0);
-		model.setValueAt(book.getTitle(), row, 1);
-		model.setValueAt(book.getAuthor(), row, 2);
-		model.setValueAt(book.getCategory(), row, 3);
-		model.setValueAt(book.getPublisher(), row, 4);
-		model.setValueAt(book.getPublishDate(), row, 5);
-		model.setValueAt(book.getStatus(), row, 6);
 	}
 
 	/**

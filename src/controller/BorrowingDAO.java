@@ -78,21 +78,22 @@ public class BorrowingDAO {
 		}
 		return false;
 	}
-	public Boolean returnBook(String readerId, String isbn, String date) throws SQLException {
-		Book book = BookDAO.getDAO().findBookByISBN(isbn);
-		Reader reader = ReaderDAO.getDAO().findReaderById(readerId);
-		if(book.getStatus() == true && reader != null) {
-			String query1 = "update borrowing set returndate = ? where isbn = ? and readerId = ?";
-			String query2 = "update book set status = true where isbn = ?";
+	public Boolean returnBook(String id, String isbn, String date) {
+		//idField.getText(), readerIdField.getText(), isbnField.getText()
+		String query1 = "update borrowing set returndate = ? where id = ?";
+		String query2 = "update book set status = true where isbn = ?";
+		try {
 			PreparedStatement ps1 = DatabaseConnection.getConnection().prepareStatement(query1);
 			PreparedStatement ps2 = DatabaseConnection.getConnection().prepareStatement(query2);
 			ps1.setString(1, date);
-			ps1.setString(2, isbn);
-			ps1.setString(3, readerId);
+			ps1.setString(2, id);
 			ps2.setString(1, isbn);
 			return ps1.executeUpdate() > 0 && ps2.executeUpdate() > 0;
 		}
-		return false;
+		catch(SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
 	}
 	public static ArrayList<Borrowing> findAllBorrowing(){
 		ArrayList<Borrowing> borrowings = new ArrayList<>();

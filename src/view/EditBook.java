@@ -30,12 +30,12 @@ public class EditBook extends JDialog {
 		this.row = row;
 		JTable bookTable = panel.getBookTable();
 		DefaultTableModel model = (DefaultTableModel) bookTable.getModel();
-		isbnField.setText(model.getValueAt(bookTable.getSelectedRow(), 0).toString());
-		titleField.setText(model.getValueAt(bookTable.getSelectedRow(), 1).toString());
-		authorField.setText(model.getValueAt(bookTable.getSelectedRow(), 2).toString());
-		categoryField.setText(model.getValueAt(bookTable.getSelectedRow(), 3).toString());
-		publisherField.setText(model.getValueAt(bookTable.getSelectedRow(), 4).toString());
-		pubdateField.setText(model.getValueAt(bookTable.getSelectedRow(), 5).toString());
+		isbnField.setText(model.getValueAt(row, 0).toString());
+		titleField.setText(model.getValueAt(row, 1).toString());
+		authorField.setText(model.getValueAt(row, 2).toString());
+		categoryField.setText(model.getValueAt(row, 3).toString());
+		publisherField.setText(model.getValueAt(row, 4).toString());
+		pubdateField.setText(model.getValueAt(row, 5).toString());
 		buttonOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				onOK();
@@ -80,7 +80,7 @@ public class EditBook extends JDialog {
 					true
 			);
 			if (BookDAO.getDAO().updateByISBN(isbnField.getText(), book)) {
-				panel.editBookAtRow(book, row);
+				panel.showTable();
 				JOptionPane.showMessageDialog(rootPane, "Sửa sách thành công");
 			} else {
 				JOptionPane.showMessageDialog(rootPane, "Sửa sách thất bại");

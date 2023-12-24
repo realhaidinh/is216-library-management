@@ -1,14 +1,11 @@
 package view;
 
-import controller.BookDAO;
 import controller.BorrowingDAO;
-import model.Book;
 import model.Borrowing;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.SQLException;
 
 public class AddBorrow extends JDialog {
 	private JPanel contentPane;
@@ -70,8 +67,8 @@ public class AddBorrow extends JDialog {
 			);
 			Boolean cond = BorrowingDAO.getDAO().borrowBook(idField.getText(), readerIdField.getText(), isbnField.getText(), borrowDateField.getText());
 			if (cond == true) {
-				panel.addToTable(borrow);
-				bookPanel.changeBookStatus(isbnField.getText());
+				panel.showTable();
+				bookPanel.showTable();
 				JOptionPane.showMessageDialog(rootPane, "Thêm phiếu mượn thành công");
 			} else {
 				JOptionPane.showMessageDialog(rootPane, "Thêm phiếu mượn thất bại");

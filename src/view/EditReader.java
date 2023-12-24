@@ -28,10 +28,10 @@ public class EditReader extends JDialog {
 		this.row = row;
 		JTable readerTable = panel.getReaderTable();
 		DefaultTableModel model = (DefaultTableModel) readerTable.getModel();
-		idField.setText(model.getValueAt(readerTable.getSelectedRow(), 0).toString());
-		nameField.setText(model.getValueAt(readerTable.getSelectedRow(), 1).toString());
-		phoneField.setText(model.getValueAt(readerTable.getSelectedRow(), 2).toString());
-		birthdayField.setText(model.getValueAt(readerTable.getSelectedRow(), 3).toString());
+		idField.setText(model.getValueAt(row, 0).toString());
+		nameField.setText(model.getValueAt(row, 1).toString());
+		phoneField.setText(model.getValueAt(row, 2).toString());
+		birthdayField.setText(model.getValueAt(row, 3).toString());
 		buttonOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				onOK();
@@ -72,7 +72,7 @@ public class EditReader extends JDialog {
 					birthdayField.getText()
 			);
 			if (ReaderDAO.getDAO().updateReaderById(idField.getText(), reader)) {
-				panel.editReaderAtRow(reader, row);
+				panel.showTable();
 				JOptionPane.showMessageDialog(rootPane, "Sửa thông tin độc giả thành công");
 			} else {
 				JOptionPane.showMessageDialog(rootPane, "Sửa thông tin độc giả thất bại");

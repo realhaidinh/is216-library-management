@@ -72,7 +72,9 @@ public class Book {
 	public Boolean getStatus() {
 		return Status;
 	}
-
+	public String getStringStatus() {
+		return Status ? "Sẵn có": "Đang cho mượn";
+	}
 	public void setStatus(Boolean status) {
 		Status = status;
 	}

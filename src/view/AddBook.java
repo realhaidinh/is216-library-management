@@ -1,6 +1,5 @@
 package view;
 
-import controller.ReaderDAO;
 import model.Book;
 import controller.BookDAO;
 import javax.swing.*;
@@ -75,7 +74,7 @@ public class AddBook extends JDialog {
 					true
 			);
 			if (BookDAO.getDAO().addBook(book)) {
-				panel.addToTable(book);
+				panel.showTable();
 				JOptionPane.showMessageDialog(rootPane, "Thêm sách thành công");
 			} else {
 				JOptionPane.showMessageDialog(rootPane, "Thêm sách thất bại");
