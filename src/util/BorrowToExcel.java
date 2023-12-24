@@ -12,7 +12,7 @@ public class BorrowToExcel extends ExportToExcel<Borrowing> {
 	public Boolean export(ArrayList<Borrowing> data, String[] headers) {
 		if(open() == false)
 			return false;
-		Sheet sheet = workbook.createSheet("Độc giả");
+		Sheet sheet = workbook.createSheet("Phiếu mượn sách");
 		Row row = null;
 		Cell cell = null;
 		int rowIndex = 0;

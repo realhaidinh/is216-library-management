@@ -72,7 +72,7 @@ public class BookPanel extends JFrame {
 			if (row == -1) {
 				JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn sách cần xóa");
 			} else {
-				if (BookDAO.getDAO().deleteByISBN(model.getValueAt(row, 0).toString()) == true) {
+				if (BookDAO.getDAO().deleteByISBN(model.getValueAt(row, 0).toString())) {
 					showTable();
 					clearTextField();
 					JOptionPane.showMessageDialog(rootPane, "Xóa sách thành công");

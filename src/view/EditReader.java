@@ -1,8 +1,6 @@
 package view;
 
-import controller.BookDAO;
 import controller.ReaderDAO;
-import model.Book;
 import model.Reader;
 
 import javax.swing.*;
@@ -19,30 +17,20 @@ public class EditReader extends JDialog {
 	private JTextField phoneField;
 	private JTextField birthdayField;
 	private ReaderPanel panel;
-	private int row;
 	public EditReader(ReaderPanel panel, int row) {
 		setContentPane(contentPane);
 		setModal(true);
 		getRootPane().setDefaultButton(buttonOK);
 		this.panel = panel;
-		this.row = row;
 		JTable readerTable = panel.getReaderTable();
 		DefaultTableModel model = (DefaultTableModel) readerTable.getModel();
 		idField.setText(model.getValueAt(row, 0).toString());
 		nameField.setText(model.getValueAt(row, 1).toString());
 		phoneField.setText(model.getValueAt(row, 2).toString());
 		birthdayField.setText(model.getValueAt(row, 3).toString());
-		buttonOK.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				onOK();
-			}
-		});
+		buttonOK.addActionListener(e -> onOK());
 
-		buttonCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				onCancel();
-			}
-		});
+		buttonCancel.addActionListener(e -> onCancel());
 
 		// call onCancel() when cross is clicked
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -53,11 +41,7 @@ public class EditReader extends JDialog {
 		});
 
 		// call onCancel() on ESCAPE
-		contentPane.registerKeyboardAction(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				onCancel();
-			}
-		}, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 	}
 
 	private void onOK() {

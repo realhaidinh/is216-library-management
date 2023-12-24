@@ -31,7 +31,7 @@ public class ReaderPanel extends JFrame {
 	private JButton exportBtn;
 	private ArrayList<Reader> readers;
 	private DefaultTableModel model;
-	String headers[] = {"Mã độc giả", "Tên độc giả", "Ngày sinh", "Số điện thoại"};
+	String[] headers = {"Mã độc giả", "Tên độc giả", "Ngày sinh", "Số điện thoại"};
 
 	public ReaderPanel() {
 		$$$setupUI$$$();
@@ -60,7 +60,7 @@ public class ReaderPanel extends JFrame {
 			if (row == -1) {
 				JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn độc giả cần xóa");
 			} else {
-				if (ReaderDAO.getDAO().deleteById(model.getValueAt(row, 0).toString()) == true) {
+				if (ReaderDAO.getDAO().deleteById(model.getValueAt(row, 0).toString())) {
 					showTable();
 					JOptionPane.showMessageDialog(rootPane, "Xóa độc giả thành công");
 					clearTextField();
@@ -190,9 +190,5 @@ public class ReaderPanel extends JFrame {
 	 */
 	public JComponent $$$getRootComponent$$$() {
 		return readerPanel;
-	}
-
-	public void addToList(Reader reader) {
-		readers.add(reader);
 	}
 }

@@ -24,17 +24,9 @@ public class AddBorrow extends JDialog {
 		getRootPane().setDefaultButton(buttonOK);
 		this.panel = panel;
 		this.bookPanel = bookPanel;
-		buttonOK.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				onOK();
-			}
-		});
+		buttonOK.addActionListener(e -> onOK());
 
-		buttonCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				onCancel();
-			}
-		});
+		buttonCancel.addActionListener(e -> onCancel());
 
 		// call onCancel() when cross is clicked
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -45,11 +37,7 @@ public class AddBorrow extends JDialog {
 		});
 
 		// call onCancel() on ESCAPE
-		contentPane.registerKeyboardAction(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				onCancel();
-			}
-		}, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 	}
 
 	private void onOK() {
@@ -58,15 +46,8 @@ public class AddBorrow extends JDialog {
 				borrowDateField.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(rootPane, "Vui lòng điền đầy đủ thông tin");
 		} else {
-			Borrowing borrow = new Borrowing(
-					idField.getText(),
-					isbnField.getText(),
-					readerIdField.getText(),
-					borrowDateField.getText(),
-					""
-			);
 			Boolean cond = BorrowingDAO.getDAO().borrowBook(idField.getText(), readerIdField.getText(), isbnField.getText(), borrowDateField.getText());
-			if (cond == true) {
+			if (cond) {
 				panel.showTable();
 				bookPanel.showTable();
 				JOptionPane.showMessageDialog(rootPane, "Thêm phiếu mượn thành công");

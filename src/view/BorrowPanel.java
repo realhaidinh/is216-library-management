@@ -28,8 +28,8 @@ public class BorrowPanel extends JFrame {
 	private JTextField idField;
 	private ArrayList<Borrowing> borrows;
 	private DefaultTableModel model;
-	String headers[] = {"Mã phiếu mượn", "Mã độc giả", "Mã sách", "Ngày mượn", "Ngày trả"};
-	private BookPanel bookPanel;
+	String[] headers = {"Mã phiếu mượn", "Mã độc giả", "Mã sách", "Ngày mượn", "Ngày trả"};
+//	private BookPanel bookPanel;
 
 	public BorrowPanel(BookPanel bookPanel) {
 		$$$setupUI$$$();
@@ -37,7 +37,7 @@ public class BorrowPanel extends JFrame {
 		model.setColumnIdentifiers(headers);
 		borrows = BorrowingDAO.findAllBorrowing();
 		showTable();
-		this.bookPanel = bookPanel;
+//		this.bookPanel = bookPanel;
 		borrowTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -76,7 +76,7 @@ public class BorrowPanel extends JFrame {
 				JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn phiếu mượn cần xóa");
 			} else {
 				int id = Integer.parseInt(model.getValueAt(row, 0).toString());
-				if (BorrowingDAO.getDAO().deleteBorrow(id, model.getValueAt(row, 2).toString()) == true) {
+				if (BorrowingDAO.getDAO().deleteBorrow(id, model.getValueAt(row, 2).toString())) {
 					bookPanel.showTable();
 					showTable();
 					JOptionPane.showMessageDialog(rootPane, "Xóa phiếu mượn thành công");

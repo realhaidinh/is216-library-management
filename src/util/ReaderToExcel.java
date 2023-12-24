@@ -10,7 +10,7 @@ public class ReaderToExcel extends ExportToExcel<Reader> {
 
 	@Override
 	public Boolean export(ArrayList<Reader> data, String[] headers) {
-		if(open() == false)
+		if(!open())
 			return false;
 		Sheet sheet = workbook.createSheet("Độc giả");
 		Row row = null;

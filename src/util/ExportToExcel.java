@@ -34,9 +34,6 @@ public abstract class ExportToExcel<V> {
 			workbook.close();
 			file.close();
 			return true;
-		} catch (FileNotFoundException e) {
-			System.err.println(e.getMessage());
-			return false;
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 			return false;
