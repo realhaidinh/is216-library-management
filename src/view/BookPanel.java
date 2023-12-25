@@ -43,7 +43,7 @@ public class BookPanel extends JFrame {
 	private ArrayList<Book> books;
 	private DefaultTableModel model;
 	private String[] headers = {"Mã sách", "Tên sách", "Tác giả", "Thể loại", "Nhà xuất bản", "Năm xuất bản", "Trạng thái"};
-
+	private BorrowPanel borrowPanel;
 	public BookPanel() throws SQLException {
 		$$$setupUI$$$();
 		model = (DefaultTableModel) bookTable.getModel();
@@ -75,12 +75,16 @@ public class BookPanel extends JFrame {
 			if (row == -1) {
 				JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn sách cần xóa");
 			} else {
-				if (BookDAO.getDAO().deleteByISBN(model.getValueAt(row, 0).toString())) {
-					showTable(-1, "");
-					clearTextField();
-					JOptionPane.showMessageDialog(rootPane, "Xóa sách thành công");
-				} else {
-					JOptionPane.showMessageDialog(rootPane, "Xóa sách thất bại");
+				int input = JOptionPane.showConfirmDialog(thisPanel, "Xác nhận xóa sách", "Xóa sách", JOptionPane.OK_CANCEL_OPTION);
+				if (input == JOptionPane.OK_OPTION) {
+					if (BookDAO.getDAO().deleteByISBN(model.getValueAt(row, 0).toString())) {
+						showTable(-1, "");
+						borrowPanel.showTable(-1, "");
+						clearTextField();
+						JOptionPane.showMessageDialog(rootPane, "Xóa sách thành công");
+					} else {
+						JOptionPane.showMessageDialog(rootPane, "Xóa sách thất bại");
+					}
 				}
 			}
 		});
@@ -119,6 +123,10 @@ public class BookPanel extends JFrame {
 
 	public JTable getBookTable() {
 		return bookTable;
+	}
+
+	public void setBorrowPanel(BorrowPanel borrowPanel) {
+		this.borrowPanel = borrowPanel;
 	}
 
 	public void showTable(int type, String query) {

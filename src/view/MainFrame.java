@@ -20,6 +20,9 @@ public class MainFrame extends JFrame {
 		bookPanel = new BookPanel();
 		readerPanel = new ReaderPanel();
 		borrowPanel = new BorrowPanel(bookPanel);
+		bookPanel.setBorrowPanel(borrowPanel);
+		readerPanel.setBookPanel(bookPanel);
+		readerPanel.setBorrowPanel(borrowPanel);
 		tabbedPane.addTab("Sách", bookPanel.$$$getRootComponent$$$());
 		tabbedPane.addTab("Độc giả", readerPanel.$$$getRootComponent$$$());
 		tabbedPane.addTab("Mượn sách", borrowPanel.$$$getRootComponent$$$());

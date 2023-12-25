@@ -35,7 +35,8 @@ public class ReaderPanel extends JFrame {
 	private ArrayList<Reader> readers;
 	private DefaultTableModel model;
 	String[] headers = {"Mã độc giả", "Tên độc giả", "Số điện thoại", "Ngày sinh"};
-
+	private BookPanel bookPanel;
+	private BorrowPanel borrowPanel;
 	public ReaderPanel() {
 		$$$setupUI$$$();
 		model = (DefaultTableModel) readerTable.getModel();
@@ -63,12 +64,17 @@ public class ReaderPanel extends JFrame {
 			if (row == -1) {
 				JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn độc giả cần xóa");
 			} else {
-				if (ReaderDAO.getDAO().deleteById(model.getValueAt(row, 0).toString())) {
-					showTable(-1, "");
-					JOptionPane.showMessageDialog(rootPane, "Xóa độc giả thành công");
-					clearTextField();
-				} else {
-					JOptionPane.showMessageDialog(rootPane, "Xóa độc giả thất bại");
+				int input = JOptionPane.showConfirmDialog(thisPanel, "Xác nhận xóa độc giả", "Xóa độc giả", JOptionPane.OK_CANCEL_OPTION);
+				if (input == JOptionPane.OK_OPTION) {
+					if (ReaderDAO.getDAO().deleteById(model.getValueAt(row, 0).toString())) {
+						showTable(-1, "");
+						borrowPanel.showTable(-1, "");
+						bookPanel.showTable(-1, "");
+						JOptionPane.showMessageDialog(rootPane, "Xóa độc giả thành công");
+						clearTextField();
+					} else {
+						JOptionPane.showMessageDialog(rootPane, "Xóa độc giả thất bại");
+					}
 				}
 			}
 		});
@@ -236,4 +242,11 @@ public class ReaderPanel extends JFrame {
 		return readerPanel;
 	}
 
+	public void setBookPanel(BookPanel bookPanel) {
+		this.bookPanel = bookPanel;
+	}
+
+	public void setBorrowPanel(BorrowPanel borrowPanel) {
+		this.borrowPanel = borrowPanel;
+	}
 }

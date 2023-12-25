@@ -1,6 +1,8 @@
 package controller;
 import java.sql.*;
 import java.util.ArrayList;
+
+import model.Borrowing;
 import model.Reader;
 public class ReaderDAO {
 	private static ReaderDAO dao = null;
@@ -46,6 +48,10 @@ public class ReaderDAO {
 		return reader;
 	}
 	public Boolean deleteById(String id) {
+		ArrayList<Borrowing> borrows = BorrowingDAO.findBorrowingByReaderId(id);
+		for(Borrowing borrow : borrows) {
+			BorrowingDAO.getDAO().deleteBorrow(borrow.getId(), borrow.getISBN());
+		}
 		String query = "delete from reader where id = ?";
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);

@@ -16,8 +16,8 @@ public class BorrowingDAO {
 	public static void createBorrowingTable() throws SQLException {
 		String query = "create table if not exists borrowing " +
 				"(id string primary key, isbn string, readerId string, borrowdate string, returndate string, " +
-				"foreign key(isbn) references book (isbn) on delete cascade on update no action," +
-				"foreign key(readerId) references reader (readerId) on delete cascade on update no action)";
+				"foreign key(isbn) references book (isbn) on delete cascade on update no action ," +
+				"foreign key(readerId) references reader (id) on delete cascade on update no action )";
 		Statement statement = DatabaseConnection.getConnection().createStatement();
 		statement.executeUpdate(query);
 	}
@@ -28,13 +28,13 @@ public class BorrowingDAO {
 		}
 		return dao;
 	}
-	public Boolean deleteBorrow(int id, String isbn) {
+	public Boolean deleteBorrow(String id, String isbn) {
 		String query = "delete from borrowing where id = ?";
 		String query2 = "update book set status = true where isbn = ?";
 		try{
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 			PreparedStatement ps2 = DatabaseConnection.getConnection().prepareStatement(query2);
-			ps.setInt(1, id);
+			ps.setString(1, id);
 			ps2.setString(1, isbn);
 			int a = ps.executeUpdate();
 			int b = ps2.executeUpdate();

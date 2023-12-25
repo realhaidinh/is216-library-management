@@ -10,6 +10,7 @@ public class DatabaseConnection {
 		if(conn == null) {
 			try {
 				conn = DriverManager.getConnection("jdbc:sqlite:database.db");
+				conn.prepareStatement("PRAGMA foreign_keys=ON").execute();
 			}
 			catch(SQLException e) {
 				System.err.println(e.getMessage());

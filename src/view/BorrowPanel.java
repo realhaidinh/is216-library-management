@@ -7,8 +7,6 @@ import util.BorrowToExcel;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -79,14 +77,16 @@ public class BorrowPanel extends JFrame {
 			if (row == -1) {
 				JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn phiếu mượn cần xóa");
 			} else {
-				int id = Integer.parseInt(model.getValueAt(row, 0).toString());
-				if (BorrowingDAO.getDAO().deleteBorrow(id, model.getValueAt(row, 2).toString())) {
-					bookPanel.showTable(-1, "");
-					showTable(-1, "");
-					JOptionPane.showMessageDialog(rootPane, "Xóa phiếu mượn thành công");
-					clearTextField();
-				} else {
-					JOptionPane.showMessageDialog(rootPane, "Xóa phiếu mượn thất bại");
+				int input = JOptionPane.showConfirmDialog(thisPanel, "Xác nhận xóa phiếu mượn", "Xóa phiếu mượn", JOptionPane.OK_CANCEL_OPTION);
+				if (input == JOptionPane.OK_OPTION) {
+					if (BorrowingDAO.getDAO().deleteBorrow(model.getValueAt(row, 0).toString(), model.getValueAt(row, 2).toString())) {
+						bookPanel.showTable(-1, "");
+						showTable(-1, "");
+						JOptionPane.showMessageDialog(rootPane, "Xóa phiếu mượn thành công");
+						clearTextField();
+					} else {
+						JOptionPane.showMessageDialog(rootPane, "Xóa phiếu mượn thất bại");
+					}
 				}
 			}
 		});
@@ -104,8 +104,9 @@ public class BorrowPanel extends JFrame {
 				}
 			}
 		});
-		for (int i = 0; i < 3; ++i)
+		for (int i = 0; i < 3; ++i) {
 			searchCombo.addItem(headers[i]);
+		}
 
 		searchBtn.addActionListener(e -> {
 			showTable(searchCombo.getSelectedIndex(), searchField.getText());
