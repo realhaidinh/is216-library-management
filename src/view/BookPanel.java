@@ -37,6 +37,9 @@ public class BookPanel extends JFrame {
 	private JButton deleteBtn;
 	private JButton editBtn;
 	private JButton exportBtn;
+	private JButton searchBtn;
+	private JTextField searchField;
+	private JComboBox searchCombo;
 	private ArrayList<Book> books;
 	private DefaultTableModel model;
 	private String[] headers = {"Mã sách", "Tên sách", "Tác giả", "Thể loại", "Nhà xuất bản", "Năm xuất bản", "Trạng thái"};
@@ -47,7 +50,7 @@ public class BookPanel extends JFrame {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		model.setColumnIdentifiers(headers);
 		books = BookDAO.getDAO().findAllBook();
-		showTable();
+		showTable(-1, "");
 		bookTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -73,7 +76,7 @@ public class BookPanel extends JFrame {
 				JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn sách cần xóa");
 			} else {
 				if (BookDAO.getDAO().deleteByISBN(model.getValueAt(row, 0).toString())) {
-					showTable();
+					showTable(-1, "");
 					clearTextField();
 					JOptionPane.showMessageDialog(rootPane, "Xóa sách thành công");
 				} else {
@@ -107,21 +110,65 @@ public class BookPanel extends JFrame {
 				}
 			}
 		});
+		for (String item : headers)
+			searchCombo.addItem(item);
+		searchBtn.addActionListener(e -> {
+			showTable(searchCombo.getSelectedIndex(), searchField.getText());
+		});
 	}
+
 	public JTable getBookTable() {
 		return bookTable;
 	}
-	public void showTable() {
-		try {
+
+	public void showTable(int type, String query) {
+		if (query.isEmpty()) {
 			books = BookDAO.getDAO().findAllBook();
-		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+		} else {
+			switch (type) {
+				case -1: {
+					books = BookDAO.getDAO().findAllBook();
+					break;
+				}
+				case 0: {
+					books = new ArrayList<Book>();
+					Book book = BookDAO.getDAO().findBookByISBN(query);
+					if (book.getISBN() != null)
+						books.add(book);
+					break;
+				}
+				case 1: {
+					books = BookDAO.getDAO().findBookByTitle(query);
+					break;
+				}
+				case 2: {
+					books = BookDAO.getDAO().findBookByAuthor(query);
+					break;
+				}
+				case 3: {
+					books = BookDAO.getDAO().findBookByCategory(query);
+					break;
+				}
+				case 4: {
+					books = BookDAO.getDAO().findBookByPublisher(query);
+					break;
+				}
+				case 5: {
+					books = BookDAO.getDAO().findBookByPublishDate(query);
+					break;
+				}
+				case 6: {
+					books = BookDAO.getDAO().findBookByStatus(query);
+					break;
+				}
+			}
 		}
 		model.setNumRows(0);
 		for (Book book : books) {
 			addToTable(book);
 		}
 	}
+
 	public void clearTextField() {
 		isbnField.setText("");
 		titleField.setText("");
@@ -131,6 +178,7 @@ public class BookPanel extends JFrame {
 		pubdateField.setText("");
 		statusField.setText("");
 	}
+
 	public void addToTable(Book book) {
 		model.addRow(new Object[]{
 				book.getISBN(), book.getTitle(), book.getAuthor(), book.getCategory(), book.getPublisher(), book.getPublishDate(), book.getStatus() ? "Sẵn có" : "Đang cho mượn"
@@ -146,7 +194,7 @@ public class BookPanel extends JFrame {
 	 */
 	private void $$$setupUI$$$() {
 		bookPanel = new JPanel();
-		bookPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(8, 6, new Insets(0, 0, 0, 0), -1, -1));
+		bookPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(8, 7, new Insets(0, 0, 0, 0), -1, -1));
 		isbn = new JLabel();
 		isbn.setText("Mã sách");
 		bookPanel.add(isbn, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(131, 17), null, 0, false));
@@ -207,7 +255,7 @@ public class BookPanel extends JFrame {
 		bookPanel.add(panel1, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 5, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
 		final JPanel panel2 = new JPanel();
 		panel2.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-		bookPanel.add(panel2, new com.intellij.uiDesigner.core.GridConstraints(1, 5, 5, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+		bookPanel.add(panel2, new com.intellij.uiDesigner.core.GridConstraints(1, 6, 5, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
 		isbnField = new JTextField();
 		isbnField.setEditable(false);
 		bookPanel.add(isbnField, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
@@ -226,6 +274,13 @@ public class BookPanel extends JFrame {
 		exportBtn = new JButton();
 		exportBtn.setText("Xuất danh sách");
 		bookPanel.add(exportBtn, new com.intellij.uiDesigner.core.GridConstraints(6, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		searchBtn = new JButton();
+		searchBtn.setText("Tìm kiếm");
+		bookPanel.add(searchBtn, new com.intellij.uiDesigner.core.GridConstraints(4, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		searchField = new JTextField();
+		bookPanel.add(searchField, new com.intellij.uiDesigner.core.GridConstraints(4, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+		searchCombo = new JComboBox();
+		bookPanel.add(searchCombo, new com.intellij.uiDesigner.core.GridConstraints(4, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 	}
 
 	/**

@@ -68,7 +68,7 @@ public class EditBook extends JDialog {
 					true
 			);
 			if (BookDAO.getDAO().updateByISBN(isbnField.getText(), book)) {
-				panel.showTable();
+				panel.showTable(-1, "");
 				JOptionPane.showMessageDialog(rootPane, "Sửa sách thành công");
 			} else {
 				JOptionPane.showMessageDialog(rootPane, "Sửa sách thất bại");

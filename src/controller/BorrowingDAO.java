@@ -95,11 +95,24 @@ public class BorrowingDAO {
 			return false;
 		}
 	}
+	public static Borrowing findById(String id) {
+		String query = "select * from borrowing where id = ?";
+		Borrowing borrow = null;
+		try{
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setString(1, id);
+			ResultSet rs = ps.executeQuery();
+			borrow = borrowingFromResult(rs);
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return borrow;
+	}
 	public static ArrayList<Borrowing> findAllBorrowing(){
 		ArrayList<Borrowing> borrowings = new ArrayList<>();
 		String query = "SELECT * FROM borrowing";
 		try {
-		PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				borrowings.add(borrowingFromResult(rs));
@@ -109,14 +122,33 @@ public class BorrowingDAO {
 		}
 		return borrowings;
 	}
-	public ArrayList<Borrowing> findBorrowingByReaderId(String id) throws SQLException {
+	public static ArrayList<Borrowing> findBorrowingByReaderId(String id) {
 		ArrayList<Borrowing> borrowings = new ArrayList<>();
 		String query = "SELECT * FROM borrowing where readerId = ?";
-		PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
-		ps.setString(1, id);
-		ResultSet rs = ps.executeQuery();
-		while(rs.next()) {
-			borrowings.add(borrowingFromResult(rs));
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setString(1, id);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				borrowings.add(borrowingFromResult(rs));
+			}
+		} catch(SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return borrowings;
+	}
+	public static ArrayList<Borrowing> findBorrowingByISBN(String isbn) {
+		ArrayList<Borrowing> borrowings = new ArrayList<>();
+		String query = "SELECT * FROM borrowing where isbn = ?";
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setString(1, isbn);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				borrowings.add(borrowingFromResult(rs));
+			}
+		} catch(SQLException e) {
+			System.err.println(e.getMessage());
 		}
 		return borrowings;
 	}

@@ -48,8 +48,8 @@ public class AddBorrow extends JDialog {
 		} else {
 			Boolean cond = BorrowingDAO.getDAO().borrowBook(idField.getText(), readerIdField.getText(), isbnField.getText(), borrowDateField.getText());
 			if (cond) {
-				panel.showTable();
-				bookPanel.showTable();
+				panel.showTable(-1, "");
+				bookPanel.showTable(-1, "");
 				JOptionPane.showMessageDialog(rootPane, "Thêm phiếu mượn thành công");
 			} else {
 				JOptionPane.showMessageDialog(rootPane, "Thêm phiếu mượn thất bại");

@@ -66,15 +66,8 @@ public class ReturnBook extends JDialog {
 		// add your code here
 		//String Id, String ISBN, String ReaderId, String BorrowDate, String ReturnDate
 		if (BorrowingDAO.getDAO().returnBook(idField.getText(), isbnField.getText(), returnDateField.getText())) {
-			Borrowing borrow = new Borrowing(
-					idField.getText(),
-					isbnField.getText(),
-					readerIdField.getText(),
-					borrowDateField.getText(),
-					returnDateField.getText()
-			);
-			panel.showTable();
-			bookPanel.showTable();
+			panel.showTable(-1, "");
+			bookPanel.showTable(-1, "");
 			JOptionPane.showMessageDialog(rootPane, "Trả sách thành công");
 		} else {
 			JOptionPane.showMessageDialog(rootPane, "Trả sách thất bại");

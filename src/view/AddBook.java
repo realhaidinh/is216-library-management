@@ -62,7 +62,7 @@ public class AddBook extends JDialog {
 					true
 			);
 			if (BookDAO.getDAO().addBook(book)) {
-				panel.showTable();
+				panel.showTable(-1, "");
 				JOptionPane.showMessageDialog(rootPane, "Thêm sách thành công");
 			} else {
 				JOptionPane.showMessageDialog(rootPane, "Thêm sách thất bại");

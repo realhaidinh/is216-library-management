@@ -55,7 +55,7 @@ public class AddReader extends JDialog {
 					phoneField.getText(),
 					birthdayField.getText());
 			if (ReaderDAO.getDAO().addReader(reader)) {
-				panel.showTable();
+				panel.showTable(-1, "");
 				JOptionPane.showMessageDialog(rootPane, "Thêm độc giả thành công");
 			} else {
 				JOptionPane.showMessageDialog(rootPane, "Thêm độc giả thất bại");

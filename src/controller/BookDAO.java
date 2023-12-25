@@ -55,13 +55,17 @@ public class BookDAO {
 		}
 		return false;
 	}
-	public Book findBookByISBN(String ISBN) throws SQLException{
+	public Book findBookByISBN(String ISBN) {
 		String query = "SELECT * FROM book WHERE isbn = ?";
 		Book book = null;
-		PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
-		ps.setString(1, ISBN);
-		ResultSet rs = ps.executeQuery();
-		book = bookFromResult(rs);
+		try{
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setString(1, ISBN);
+			ResultSet rs = ps.executeQuery();
+			book = bookFromResult(rs);
+		} catch(SQLException e) {
+			System.err.println(e.getMessage());
+		}
 		return book;
 	}
 	public Boolean deleteByISBN(String isbn) {
@@ -77,39 +81,111 @@ public class BookDAO {
 		return false;
 	}
 
-	public ArrayList<Book> findAllBook() throws SQLException{
+	public ArrayList<Book> findAllBook() {
 		ArrayList<Book> books = new ArrayList<>();
 		String query = "SELECT * FROM book";
-		PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
-		ResultSet rs = ps.executeQuery();
-		while(rs.next()) {
-			books.add(bookFromResult(rs));
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				books.add(bookFromResult(rs));
+			}
+		}
+		catch (SQLException e) {
+			System.err.println(e.getMessage());
 		}
 		return books;
 	}
-	public ArrayList<Book> findBookByCategory(String Category) throws SQLException{
+	public ArrayList<Book> findBookByCategory(String Category){
 		ArrayList<Book> books = new ArrayList<>();
 		String query = "SELECT * FROM book WHERE category LIKE ?";
-		PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
-		ps.setString(1, Category + "%");
-		ResultSet rs = ps.executeQuery();
-		while(rs.next()) {
-			books.add(bookFromResult(rs));
+		try{
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setString(1, Category + "%");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				books.add(bookFromResult(rs));
+			}
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
 		}
 		return books;
 	}
-	public ArrayList<Book> findBookByTitle(String Title) throws SQLException{
+	public ArrayList<Book> findBookByTitle(String Title){
 		ArrayList<Book> books = new ArrayList<>();
-		String query = "SELECT * FROM book WHERE category LIKE ?";
-		PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
-		ps.setString(1, Title + "%");
-		ResultSet rs = ps.executeQuery();
-		while(rs.next()) {
-			books.add(bookFromResult(rs));
+		String query = "SELECT * FROM book WHERE title LIKE ?";
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setString(1, Title + "%");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				books.add(bookFromResult(rs));
+			}
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());;
 		}
 		return books;
 	}
-
+	public ArrayList<Book> findBookByPublisher(String publisher){
+		ArrayList<Book> books = new ArrayList<>();
+		String query = "SELECT * FROM book WHERE publisher LIKE ?";
+		try{
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setString(1, publisher + "%");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				books.add(bookFromResult(rs));
+			}
+		} catch(SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return books;
+	}
+	public ArrayList<Book> findBookByPublishDate(String date){
+		ArrayList<Book> books = new ArrayList<>();
+		String query = "SELECT * FROM book WHERE publishdate LIKE ?";
+		try{
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setInt(1, Integer.parseInt(date));
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				books.add(bookFromResult(rs));
+			}
+		} catch(SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return books;
+	}
+	public ArrayList<Book> findBookByAuthor(String author){
+		ArrayList<Book> books = new ArrayList<>();
+		String query = "SELECT * FROM book WHERE author LIKE ?";
+		try{
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setString(1, author + "%");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				books.add(bookFromResult(rs));
+			}
+		} catch(SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return books;
+	}
+	public ArrayList<Book> findBookByStatus(String status){
+		ArrayList<Book> books = new ArrayList<>();
+		String query = "SELECT * FROM book WHERE status = ?";
+		try{
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setBoolean(1, status.equals("Sẵn có") ? true : false);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				books.add(bookFromResult(rs));
+			}
+		} catch(SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return books;
+	}
 	public Boolean updateByISBN(String isbn, Book book) {
 		String query = "update book " +
 				"set isbn = ?, title = ?, author = ?, category = ?, publisher = ?, publishdate = ?" +

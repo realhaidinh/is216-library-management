@@ -56,7 +56,7 @@ public class EditReader extends JDialog {
 					birthdayField.getText()
 			);
 			if (ReaderDAO.getDAO().updateReaderById(idField.getText(), reader)) {
-				panel.showTable();
+				panel.showTable(-1, "");
 				JOptionPane.showMessageDialog(rootPane, "Sửa thông tin độc giả thành công");
 			} else {
 				JOptionPane.showMessageDialog(rootPane, "Sửa thông tin độc giả thất bại");

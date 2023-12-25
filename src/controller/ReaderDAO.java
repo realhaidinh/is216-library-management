@@ -86,12 +86,28 @@ public class ReaderDAO {
 		}
 		return reader;
 	}
-	public ArrayList<Reader> findReaderByName(String name) {
+	public static ArrayList<Reader> findReaderByName(String name) {
 		ArrayList<Reader> readers = new ArrayList<>();
 		String query = "SELECT * FROM reader WHERE name LIKE ?";
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 			ps.setString(1, name + "%");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				readers.add(readerFromResult(rs));
+			}
+		}
+		catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return readers;
+	}
+	public static ArrayList<Reader> findReaderByPhone(String phone) {
+		ArrayList<Reader> readers = new ArrayList<>();
+		String query = "SELECT * FROM reader WHERE phone like ?";
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setString(1, phone + "%");
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				readers.add(readerFromResult(rs));
