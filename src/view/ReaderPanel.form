@@ -31,7 +31,8 @@
           </grid>
         </constraints>
         <properties>
-          <editable value="false"/>
+          <editable value="true"/>
+          <text value=""/>
         </properties>
       </component>
       <component id="809f5" class="javax.swing.JLabel" binding="name">
@@ -49,7 +50,7 @@
           </grid>
         </constraints>
         <properties>
-          <editable value="false"/>
+          <editable value="true"/>
         </properties>
       </component>
       <scrollpane id="2977c" binding="scroll">
@@ -149,7 +150,7 @@
           </grid>
         </constraints>
         <properties>
-          <editable value="false"/>
+          <editable value="true"/>
         </properties>
       </component>
       <component id="62340" class="javax.swing.JTextField" binding="phoneField">
@@ -159,7 +160,7 @@
           </grid>
         </constraints>
         <properties>
-          <editable value="false"/>
+          <editable value="true"/>
         </properties>
       </component>
       <component id="8250e" class="javax.swing.JLabel" binding="phone">

@@ -108,7 +108,7 @@
           </grid>
         </constraints>
         <properties>
-          <editable value="false"/>
+          <editable value="true"/>
           <text value=""/>
         </properties>
       </component>
@@ -129,7 +129,7 @@
           </grid>
         </constraints>
         <properties>
-          <editable value="false"/>
+          <editable value="true"/>
         </properties>
       </component>
       <component id="e7bd2" class="javax.swing.JTextField" binding="returnDateField">
@@ -139,7 +139,7 @@
           </grid>
         </constraints>
         <properties>
-          <editable value="false"/>
+          <editable value="true"/>
           <text value=""/>
         </properties>
       </component>
@@ -168,7 +168,7 @@
           </grid>
         </constraints>
         <properties>
-          <editable value="false"/>
+          <editable value="true"/>
         </properties>
       </component>
       <component id="134b0" class="javax.swing.JLabel">
@@ -188,7 +188,7 @@
           </grid>
         </constraints>
         <properties>
-          <editable value="false"/>
+          <editable value="true"/>
           <text value=""/>
         </properties>
       </component>
